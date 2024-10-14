@@ -4,7 +4,7 @@ resource "aws_subnet" "dev_public_subnet" {
     aws_vpc.csye6225_vpc,
   ]
   count                   = local.az_count
-  vpc_id                  = aws_vpc.csye6225_vpc.id
+  vpc_id                  = aws_vpc.csye6225_vpc.bad
   cidr_block              = element(var.public_subnet_cidr, count.index)
   availability_zone       = element(data.aws_availability_zones.available.names, count.index)
   map_public_ip_on_launch = true
