@@ -24,8 +24,8 @@ jobs:
       - name: Terraform Format Check
         id: format
         run: |
-          terraform fmt -check -recursive | tee format_output.txt
-        continue-on-error: false
+          terraform fmt -check -recursive 
+        # continue-on-error: false
 
       - name: Set Terraform Format Output
         if: failure()
@@ -35,8 +35,8 @@ jobs:
       - name: Terraform Validate
         id: validate
         run: |
-          terraform validate | tee validate_output.txt
-        continue-on-error: false
+          terraform validate 
+        # continue-on-error: false
 
       - name: Set Terraform Validate Output
         if: failure()
@@ -56,3 +56,4 @@ jobs:
           echo "$format_output"
           echo "Terraform Validate Output:"
           echo "$validate_output"
+
