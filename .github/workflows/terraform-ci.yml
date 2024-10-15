@@ -27,10 +27,10 @@ jobs:
           terraform fmt -check -recursive 
         # continue-on-error: false
 
-      - name: Set Terraform Format Output
-        if: failure()
-        run: |
-          echo "format_output=$(cat format_output.txt)" >> $GITHUB_ENV
+      # - name: Set Terraform Format Output
+      #   if: failure()
+      #   run: |
+      #     echo "format_output=$(cat format_output.txt)" >> $GITHUB_ENV
 
       - name: Terraform Validate
         id: validate
@@ -38,10 +38,10 @@ jobs:
           terraform validate 
         # continue-on-error: false
 
-      - name: Set Terraform Validate Output
-        if: failure()
-        run: |
-          echo "validate_output=$(cat validate_output.txt)" >> $GITHUB_ENV
+      # - name: Set Terraform Validate Output
+      #   if: failure()
+      #   run: |
+      #     echo "validate_output=$(cat validate_output.txt)" >> $GITHUB_ENV
 
       - name: List Files
         run: |
@@ -52,8 +52,5 @@ jobs:
         if: failure()
         run: |
           echo "Terraform exited with a failure."
-          echo "Terraform Format Output:"
-          echo "$format_output"
-          echo "Terraform Validate Output:"
-          echo "$validate_output"
-
+          echo "Check the format or validation output for more details."
+          
