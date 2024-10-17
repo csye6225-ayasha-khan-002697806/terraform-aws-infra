@@ -33,13 +33,8 @@ variable "instance_type" {
   description = "Instance type for the EC2 instance"
 }
 
-variable "public_subnet_id" {
-  type        = string
-  description = "Public subnet ID for the EC2 instance"
-}
-
-variable "vpc_security_group_ids" {
-  description = "List of security group IDs to associate with the EC2 instance"
-  type        = list(string)
-}
+# variable "vpc_security_group_ids" {
+#   description = "List of security group IDs to associate with the EC2 instance"
+#   type        = list(string)
+# }
 
