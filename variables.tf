@@ -1,20 +1,11 @@
-# variable "cidr" {
-#   type = string
-#   #   default     = "10.0.0.0/16"
-#   description = ""
-# }
-
-
 variable "region" {
   type        = string
   description = "AWS Region"
-  #   default     = "us-east-1"
 }
 
 variable "vpc_cidr" {
   type        = string
   description = "CIDR block for the VPC"
-  #   default     = "10.0.0.0/16"
 }
 
 variable "public_subnet_cidr" {
@@ -27,7 +18,28 @@ variable "private_subnet_cidr" {
   type        = list(string)
 }
 
-# variable "availability_zones" {
-#   description = "List of availability zones"
-#   type        = list(string)
-# }
+variable "app_port" {
+  type        = number
+  description = "Port on which the application runs"
+}
+
+variable "ami_id" {
+  type        = string
+  description = "AMI ID for the EC2 instance"
+}
+
+variable "instance_type" {
+  type        = string
+  description = "Instance type for the EC2 instance"
+}
+
+variable "public_subnet_id" {
+  type        = string
+  description = "Public subnet ID for the EC2 instance"
+}
+
+variable "vpc_security_group_ids" {
+  description = "List of security group IDs to associate with the EC2 instance"
+  type        = list(string)
+}
+
