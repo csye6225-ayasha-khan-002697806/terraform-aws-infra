@@ -61,3 +61,14 @@ terraform apply
 terraform destroy
 ```
  
+
+ ### for Assignment 05
+
+
+To connect with postgres database on RDS instance from EC2
+
+1. install postgres client
+   1. sudo apt-get update
+   2. sudo apt-get install postgresql-client -y
+2. connect to DB
+   1. psql -h RDS_endpoint -U db_username -d database_name -W
