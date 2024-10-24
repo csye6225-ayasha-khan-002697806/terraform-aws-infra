@@ -38,3 +38,27 @@ variable "instance_type" {
 #   type        = list(string)
 # }
 
+variable "db_name" {
+  type        = string
+  description = "Name of the RDS database"
+}
+
+variable "db_username" {
+  type        = string
+  description = "Username for the RDS database"
+}
+
+variable "db_password" {
+  type        = string
+  description = "Password for the RDS database"
+}
+
+variable "db_port" {
+  type        = number
+  description = "DB Port for Postgres database"
+}
+
+variable "db_identifier" {
+  type        = string
+  description = "Identifier for the RDS database"
+}
