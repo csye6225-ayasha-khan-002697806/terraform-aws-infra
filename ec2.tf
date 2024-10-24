@@ -5,7 +5,7 @@ resource "aws_instance" "csye6225_ec2_instance" {
 
   depends_on = [
     aws_security_group.csye6225_security_group,
-    aws_db_instance.csye6225_postgres_instance # Ensure RDS is created before the EC2 instance
+    aws_db_instance.csye6225_postgres_instance # to ensure RDS is created before the EC2 instance
   ]
 
   ami           = var.ami_id

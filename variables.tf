@@ -57,3 +57,8 @@ variable "db_port" {
   type        = number
   description = "DB Port for Postgres database"
 }
+
+variable "db_identifier" {
+  type        = string
+  description = "Identifier for the RDS database"
+}
