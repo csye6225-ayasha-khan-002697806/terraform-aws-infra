@@ -62,3 +62,14 @@ variable "db_identifier" {
   type        = string
   description = "Identifier for the RDS database"
 }
+
+#domain and subdomain name
+variable "subdomain_name" {
+  description = "The domain name for the Route 53 hosted zone."
+  type        = string
+}
+
+variable "subdomain" {
+  description = "The subdomain name for the Route 53 record."
+  type        = string
+}
