@@ -64,12 +64,12 @@ variable "db_identifier" {
 }
 
 #domain and subdomain name
-variable "domain_name" {
+variable "subdomain_name" {
   description = "The domain name for the Route 53 hosted zone."
   type        = string
 }
 
-variable "subdomain_name" {
+variable "subdomain" {
   description = "The subdomain name for the Route 53 record."
   type        = string
 }

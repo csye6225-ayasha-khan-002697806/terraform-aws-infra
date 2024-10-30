@@ -3,20 +3,23 @@
 # Randomly generated UUID for bucket name
 resource "random_uuid" "s3_bucket_uuid" {}
 
-# Create an S3 bucket without ACL settings (since ACL is set separately)
+# Create an S3 bucket without ACL settings
 resource "aws_s3_bucket" "csye6225_bucket" {
   bucket        = random_uuid.s3_bucket_uuid.result
-  force_destroy = true # Allows Terraform to delete the bucket even if it's not empty
+  force_destroy = true
 
   tags = {
     Name = "csye6225-s3-bucket"
   }
 }
 
-# Define ACL configuration for the S3 bucket
-resource "aws_s3_bucket_acl" "bucket_acl" {
-  bucket = aws_s3_bucket.csye6225_bucket.bucket
-  acl    = "private"
+# Define Public Access Block configuration to make bucket private
+resource "aws_s3_bucket_public_access_block" "bucket_public_access_block" {
+  bucket                  = aws_s3_bucket.csye6225_bucket.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
 
 # Define server-side encryption configuration for the S3 bucket
@@ -62,4 +65,3 @@ resource "aws_s3_bucket_lifecycle_configuration" "lifecycle" {
     }
   }
 }
-
