@@ -100,6 +100,32 @@ resource "aws_iam_role_policy_attachment" "attach_cloudwatch_policy" {
   policy_arn = data.aws_iam_policy.cloudwatch_agent_policy.arn
 }
 
+resource "aws_iam_policy" "statsd_cloudwatch_policy" {
+  name        = "StatsDCloudWatchPolicy"
+  description = "Policy for publishing custom StatsD metrics to CloudWatch"
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "cloudwatch:PutMetricData"
+        ],
+        "Resource" : "*",
+        "Condition" : {
+          "StringEquals" : {
+            "cloudwatch:namespace" : "StatsD"
+          }
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "attach_statsd_policy" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = aws_iam_policy.statsd_cloudwatch_policy.arn
+}
 resource "aws_iam_instance_profile" "ec2_profile" {
   name = "ec2_profile"
   role = aws_iam_role.ec2_role.name
