@@ -3,7 +3,7 @@ resource "random_uuid" "bucket_name" {}
 
 # S3 Bucket with UUID as name
 resource "aws_s3_bucket" "s3_bucket" {
-  bucket = "terraform-${random_uuid.bucket_name.result}" # Use the generated UUID as the bucket name
+  bucket        = "terraform-${random_uuid.bucket_name.result}" # Use the generated UUID as the bucket name
   force_destroy = true
 }
 
@@ -42,7 +42,7 @@ resource "aws_iam_policy" "s3_bucket_policy" {
           "s3:PutLifecycleConfiguration"
         ],
         "Resource" : [
-          "arn:aws:s3:::${aws_s3_bucket.s3_bucket.bucket}", # Correctly reference the bucket name
+          "arn:aws:s3:::${aws_s3_bucket.s3_bucket.bucket}",  # Correctly reference the bucket name
           "arn:aws:s3:::${aws_s3_bucket.s3_bucket.bucket}/*" # Access to all objects in the bucket
         ]
       }
