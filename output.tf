@@ -29,3 +29,8 @@ output "subdomain" {
 output "a_record_name" {
   value = aws_route53_record.csye6225_ec2_a_record.name
 }
+
+# s3 bucket
+output "s3_bucket_name" {
+  value = aws_s3_bucket.s3_bucket.id
+}

@@ -32,6 +32,8 @@ resource "aws_instance" "csye6225_ec2_instance" {
     echo "DB_PASSWORD=${var.db_password}" >> /opt/csye6225/.env
     echo "DB_HOST=${aws_db_instance.csye6225_postgres_instance.address}" >> /opt/csye6225/.env
     echo "DB_PORT=${var.db_port}" >> /opt/csye6225/.env
+    echo "S3_BUCKET_NAME=${aws_s3_bucket.s3_bucket.id}" >> /opt/csye6225/.env  #  to set S3 bucket name
+
 
     # Example of passing values to the application
     export DB_NAME=${var.db_name}
@@ -39,6 +41,8 @@ resource "aws_instance" "csye6225_ec2_instance" {
     export DB_PASSWORD=${var.db_password}
     export DB_HOSTNAME=${aws_db_instance.csye6225_postgres_instance.address}
     export DB_PORT=${var.db_port}
+    export S3_BUCKET_NAME=${aws_s3_bucket.s3_bucket.id}  # Export S3 bucket name as an environment variable
+
 
     # Display the contents of the .env file
     echo "Contents of .env file:"
