@@ -1,9 +1,13 @@
-# # s3.tf
-
 # Generate a UUID for the S3 bucket name
 resource "random_uuid" "bucket_name" {}
 
-# IAM Role and Policy for S3 and Cloud Watch
+# S3 Bucket with UUID as name
+resource "aws_s3_bucket" "s3_bucket" {
+  bucket = "terraform-${random_uuid.bucket_name.result}" # Use the generated UUID as the bucket name
+  force_destroy = true
+}
+
+# IAM Role and Policy for S3 and CloudWatch
 resource "aws_iam_role" "ec2_role" {
   name = "IAMRoleForEc2"
   assume_role_policy = jsonencode({
@@ -38,8 +42,8 @@ resource "aws_iam_policy" "s3_bucket_policy" {
           "s3:PutLifecycleConfiguration"
         ],
         "Resource" : [
-          "arn:aws:s3:::${random_uuid.bucket_name.result}",
-          "arn:aws:s3:::${random_uuid.bucket_name.result}/*"
+          "arn:aws:s3:::${aws_s3_bucket.s3_bucket.bucket}", # Correctly reference the bucket name
+          "arn:aws:s3:::${aws_s3_bucket.s3_bucket.bucket}/*" # Access to all objects in the bucket
         ]
       }
     ]
@@ -50,11 +54,6 @@ resource "aws_iam_policy" "s3_bucket_policy" {
 resource "aws_iam_role_policy_attachment" "s3_policy_attachment" {
   role       = aws_iam_role.ec2_role.name
   policy_arn = aws_iam_policy.s3_bucket_policy.arn
-}
-
-# S3 Bucket with UUID as name
-resource "aws_s3_bucket" "s3_bucket" {
-  force_destroy = true
 }
 
 resource "aws_s3_bucket_public_access_block" "s3_private_bucket" {
@@ -126,6 +125,7 @@ resource "aws_iam_role_policy_attachment" "attach_statsd_policy" {
   role       = aws_iam_role.ec2_role.name
   policy_arn = aws_iam_policy.statsd_cloudwatch_policy.arn
 }
+
 resource "aws_iam_instance_profile" "ec2_profile" {
   name = "ec2_profile"
   role = aws_iam_role.ec2_role.name
