@@ -14,6 +14,7 @@ resource "aws_instance" "csye6225_ec2_instance" {
   # subnet_id              = aws_subnet.dev_public_subnet[0].id
   vpc_security_group_ids = [aws_security_group.csye6225_security_group.id]
   #   security_group_ids = [aws_security_group.csye6225_security_group.id]
+  iam_instance_profile = aws_iam_instance_profile.ec2_profile.id
 
   # Block device configuration for root volume
   root_block_device {
@@ -43,8 +44,20 @@ resource "aws_instance" "csye6225_ec2_instance" {
     echo "Contents of .env file:"
     cat /opt/csye6225/.env
 
+    # Configure the Cloudwatch agent and restart it
+    sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+    -a fetch-config \
+    -m ec2 \
+    -c file:/opt/csye6225/cloudwatch-config.json \
+    -s
+
+    echo "Cloudwatch configured"
+
+    # restart cloud watch agent
+    sudo systemctl restart amazon-cloudwatch-agent
+
     # Start your web application (you might need to modify this depending on your app's setup)
-    sudo systemctl start nodeApp.service
+    sudo systemctl restart nodeApp.service
   EOF
 
   tags = {
