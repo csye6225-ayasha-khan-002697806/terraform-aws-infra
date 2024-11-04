@@ -1,4 +1,4 @@
-# IAM Role and Policy for S3 and CloudWatch
+# IAM Role and Policy for ec2 instance
 resource "aws_iam_role" "ec2_role" {
   name = "IAMRoleForEc2"
   assume_role_policy = jsonencode({
@@ -41,16 +41,17 @@ resource "aws_iam_policy" "s3_bucket_policy" {
   })
 }
 
+# Attach CloudWatch policies to the IAM role
+data "aws_iam_policy" "cloudwatch_agent_policy" {
+  arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+}
+
 # Attach the policy to the role
 resource "aws_iam_role_policy_attachment" "s3_policy_attachment" {
   role       = aws_iam_role.ec2_role.name
   policy_arn = aws_iam_policy.s3_bucket_policy.arn
 }
 
-# Attach CloudWatch policies to the IAM role
-data "aws_iam_policy" "cloudwatch_agent_policy" {
-  arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
-}
 
 # Attach the IAM policy to the IAM role
 resource "aws_iam_role_policy_attachment" "attach_cloudwatch_policy" {
@@ -88,4 +89,32 @@ resource "aws_iam_role_policy_attachment" "attach_statsd_policy" {
 resource "aws_iam_instance_profile" "ec2_profile" {
   name = "ec2_profile"
   role = aws_iam_role.ec2_role.name
+}
+
+
+# Policy for Load Balancer access
+resource "aws_iam_policy" "load_balancer_policy" {
+  name        = "LoadBalancerPolicy"
+  description = "Policy to allow Load Balancer access"
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "elasticloadbalancing:Describe*",
+          "elasticloadbalancing:RegisterTargets",
+          "elasticloadbalancing:DeregisterTargets",
+          "elasticloadbalancing:ModifyTargetGroup"
+        ],
+        "Resource" : "*"
+      }
+    ]
+  })
+}
+
+# Attach Load Balancer Policy to EC2 Role
+resource "aws_iam_role_policy_attachment" "attach_load_balancer_policy" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = aws_iam_policy.load_balancer_policy.arn
 }

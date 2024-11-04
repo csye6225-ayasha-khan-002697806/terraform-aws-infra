@@ -43,7 +43,7 @@ resource "aws_instance" "csye6225_ec2_instance" {
     export DB_HOSTNAME=${aws_db_instance.csye6225_postgres_instance.address}
     export DB_PORT=${var.db_port}
     export S3_BUCKET_NAME=${aws_s3_bucket.s3_bucket.id}  # Export S3 bucket name as an environment variable
-    echo "AWS_REGION=${var.region}" >>/opt/csye6225/.env
+    export AWS_REGION=${var.region}
 
 
     # Display the contents of the .env file

@@ -73,3 +73,11 @@ variable "subdomain" {
   description = "The subdomain name for the Route 53 record."
   type        = string
 }
+
+
+# ssh_key_name
+variable "ssh_key_name" {
+  type        = string
+  description = "SSH key Name for launch templates"
+  # default = "ec2"
+}
