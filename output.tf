@@ -34,3 +34,8 @@ output "a_record_name" {
 output "s3_bucket_name" {
   value = aws_s3_bucket.s3_bucket.id
 }
+
+# Output ASG details for reference (optional)
+output "asg_id" {
+  value = aws_autoscaling_group.csye6225_asg.id
+}

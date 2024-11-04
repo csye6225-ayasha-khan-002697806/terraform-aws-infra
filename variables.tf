@@ -81,3 +81,54 @@ variable "ssh_key_name" {
   description = "SSH key Name for launch templates"
   # default = "ec2"
 }
+
+# auto scaling group
+variable "asg_min_size" {
+  description = "Auto scaling group min size"
+  type        = number
+}
+
+variable "asg_max_size" {
+  description = "Auto scaling group max size"
+  type        = number
+}
+
+variable "asg_desired_capacity" {
+  description = "Auto scaling group desired capacity"
+  type        = number
+}
+
+variable "asg_cool_down" {
+  description = "Auto scaling group cool down"
+  type        = number
+}
+
+variable "scale_up_eval" {
+  description = "evaluation period for scale up "
+  type        = number
+}
+
+variable "scale_up_period" {
+  description = "scale up period"
+  type        = number
+}
+
+variable "scale_up_threshold" {
+  description = "threshold for scale up policy"
+  type        = number
+}
+
+variable "scale_down_eval" {
+  description = "evaluation period for scale down "
+  type        = number
+}
+
+variable "scale_down_period" {
+  description = "scale down period"
+  type        = number
+}
+
+variable "scale_down_threshold" {
+  description = "threshold for scale down policy"
+  type        = number
+}
