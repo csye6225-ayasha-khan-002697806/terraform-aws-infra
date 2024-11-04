@@ -1,5 +1,39 @@
 # security-group.tf
 
+resource "aws_security_group" "csye6225_lb_security_group" {
+  name        = "load_balancer_security_group"
+  description = "Security group for the Load Balancer"
+  vpc_id      = aws_vpc.csye6225_vpc.id # Use the existing VPC ID here
+
+  ingress {
+    description = "Allow HTTP traffic"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow HTTPS traffic"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    description = "Allow all outbound traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "load_balancer_security_group"
+  }
+}
+
 # Application Security Group
 resource "aws_security_group" "csye6225_security_group" {
   name        = "application-security-group"
@@ -15,20 +49,20 @@ resource "aws_security_group" "csye6225_security_group" {
   }
 
   # Allow HTTP traffic from anywhere
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  # ingress {
+  #   from_port   = 80
+  #   to_port     = 80
+  #   protocol    = "tcp"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  # }
 
-  # Allow HTTPS traffic from anywhere
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  # # Allow HTTPS traffic from anywhere
+  # ingress {
+  #   from_port   = 443
+  #   to_port     = 443
+  #   protocol    = "tcp"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  # }
 
   # Allow custom application port traffic from anywhere
   ingress {
