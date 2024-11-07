@@ -112,3 +112,16 @@ resource "aws_security_group" "csye6225_rds_security_group" {
     Name = "database-security-group"
   }
 }
+
+
+# Listener for Load Balancer on Port 80
+resource "aws_lb_listener" "csye6225_app_listener" {
+  load_balancer_arn = aws_lb.csye6225_alb.arn
+  port              = 80
+  protocol          = var.tg_protocol
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.csye6225_alb_tg.arn
+  }
+}

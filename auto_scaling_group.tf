@@ -31,7 +31,7 @@ resource "aws_autoscaling_group" "csye6225_asg" {
   termination_policies = ["OldestInstance", "Default"]
 
   # Attach to load balancer if required
-  #   target_group_arns = [aws_lb_target_group.alb_tg.arn] # Assuming `alb_tg` is the target group created for your load balancer
+  target_group_arns = [aws_lb_target_group.csye6225_alb_tg.arn] # Assuming `alb_tg` is the target group created for your load balancer
 
   # Auto Scaling policies (if any)
   #   lifecycle {

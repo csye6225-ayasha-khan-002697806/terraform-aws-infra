@@ -64,8 +64,13 @@ variable "db_identifier" {
 }
 
 #domain and subdomain name
-variable "subdomain_name" {
+
+variable "domain_name" {
   description = "The domain name for the Route 53 hosted zone."
+  type        = string
+}
+variable "subdomain_name" {
+  description = "The subdomain name for the Route 53 hosted zone."
   type        = string
 }
 
@@ -132,3 +137,23 @@ variable "scale_down_threshold" {
   description = "threshold for scale down policy"
   type        = number
 }
+
+variable "lb_type" {
+  description = "Type of ALB"
+  type        = string
+}
+
+
+variable "lb_target_type" {
+  description = "load balancer target type"
+  type        = string
+}
+
+variable "tg_protocol" {
+  description = "target group protocol"
+  type        = string
+}
+
+# variable "" {
+
+# }
