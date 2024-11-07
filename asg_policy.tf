@@ -26,7 +26,7 @@ resource "aws_cloudwatch_metric_alarm" "scale_up_cpu_high_alarm" {
   period              = var.scale_up_period # Check every minute
   statistic           = "Average"
   threshold           = var.scale_up_threshold # Trigger when CPU is above 5%
-  alarm_description   = "Triggers when average CPU usage is above 5%"
+  alarm_description   = "Triggers when average CPU usage is above 15%"
   dimensions = {
     AutoScalingGroupName = aws_autoscaling_group.csye6225_asg.name
   }
@@ -47,7 +47,7 @@ resource "aws_cloudwatch_metric_alarm" "scale_up_cpu_low_alarm" {
   period              = var.scale_down_period # Check every minute
   statistic           = "Average"
   threshold           = var.scale_down_threshold # Trigger when CPU is below 3%
-  alarm_description   = "Triggers when average CPU usage is below 3%"
+  alarm_description   = "Triggers when average CPU usage is below 8%"
   dimensions = {
     AutoScalingGroupName = aws_autoscaling_group.csye6225_asg.name
   }
