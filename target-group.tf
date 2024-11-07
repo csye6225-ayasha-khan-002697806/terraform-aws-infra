@@ -7,8 +7,8 @@ resource "aws_lb_target_group" "csye6225_alb_tg" {
   vpc_id      = aws_vpc.csye6225_vpc.id # Replace with your VPC ID
 
   health_check {
-    path     = "/healthz"
-    protocol = var.tg_protocol
+    path = "/healthz"
+    # protocol = var.tg_protocol
     port     = var.app_port
     matcher  = "200"
     interval = 30
