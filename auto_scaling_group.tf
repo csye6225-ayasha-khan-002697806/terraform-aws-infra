@@ -4,7 +4,7 @@ resource "aws_autoscaling_group" "csye6225_asg" {
   launch_template {
     id      = aws_launch_template.csye6225_launch_template.id
     version = "$Latest"
-    name    = "csye6225_asg"
+    # name    = "csye6225_asg"
   }
 
   # Auto Scaling configuration

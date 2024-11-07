@@ -42,10 +42,11 @@ resource "aws_security_group" "csye6225_security_group" {
 
   # Allow SSH from anywhere (for initial setup and testing)
   ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port       = 22
+    to_port         = 22
+    protocol        = "tcp"
+    cidr_blocks     = ["0.0.0.0/0"]
+    security_groups = [aws_security_group.csye6225_lb_security_group.id]
   }
 
   # Allow HTTP traffic from anywhere
@@ -66,10 +67,11 @@ resource "aws_security_group" "csye6225_security_group" {
 
   # Allow custom application port traffic from anywhere
   ingress {
-    from_port   = var.app_port
-    to_port     = var.app_port
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port = var.app_port
+    to_port   = var.app_port
+    protocol  = "tcp"
+    # cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [aws_security_group.csye6225_lb_security_group.id]
   }
 
   # Egress rule to allow all outbound traffic

@@ -12,7 +12,7 @@
 #   ttl     = 60
 
 #   # Get the public IP address of the EC2 instance
-#   records = [aws_instance.csye6225_ec2_instance.public_ip]
+#   records = [.csye6225_ec2_instance.public_ip]
 
 #   # Ensure the A record is created only after the EC2 instance is up
 #   depends_on = [
@@ -30,7 +30,7 @@ data "aws_route53_zone" "selected_zone" {
 # Create an A record pointing to the ALB
 resource "aws_route53_record" "csye6225_app_alias_record" {
   zone_id = data.aws_route53_zone.selected_zone.zone_id
-  name    = var.subdomain # e.g., "dev" or "demo"
+  name    = "" # var.subdomain # e.g., "dev" or "demo"
   type    = "A"
 
 
