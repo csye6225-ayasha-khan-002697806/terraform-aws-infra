@@ -154,6 +154,27 @@ variable "tg_protocol" {
   type        = string
 }
 
-# variable "" {
+variable "lambda_filename" {
+  description = "lambda artifacts path"
+  type        = string
+}
 
-# }
+variable "sendgrid_api_key" {
+  description = "send grid messaging api key"
+  type        = string
+}
+
+variable "base_url" {
+  description = "Application base url"
+  type        = string
+}
+
+variable "from_email" {
+  description = "from email to send email through sendgrid"
+  type        = string
+}
+
+variable "jwt_secret" {
+  description = "JWT token secret key"
+  type        = string
+}

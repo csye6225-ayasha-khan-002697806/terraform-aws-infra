@@ -51,6 +51,9 @@ echo "DB_HOST=${aws_db_instance.csye6225_postgres_instance.address}" >> /opt/csy
 echo "DB_PORT=${var.db_port}" >> /opt/csye6225/.env
 echo "S3_BUCKET_NAME=${aws_s3_bucket.s3_bucket.id}" >> /opt/csye6225/.env
 echo "AWS_REGION=${var.region}" >> /opt/csye6225/.env  
+# Add SNS Topic ARN to the .env file
+echo "SNS_TOPIC_ARN=${aws_sns_topic.user_signup_notification.arn}" >> /opt/csye6225/.env
+echo "JWT_SECRET==${var.jwt_secret}" >> /opt/csye6225/.env
 
 # Example of passing values to the application
 export DB_NAME=${var.db_name}
@@ -60,6 +63,12 @@ export DB_HOSTNAME=${aws_db_instance.csye6225_postgres_instance.address}
 export DB_PORT=${var.db_port}
 export S3_BUCKET_NAME=${aws_s3_bucket.s3_bucket.id}
 export AWS_REGION=${var.region}
+# Export the ARN as an environment variable for use in the application
+export SNS_TOPIC_ARN=${aws_sns_topic.user_signup_notification.arn}
+
+
+# Log for debugging
+echo "SNS configuration added to environment variables"
 
 # Display the contents of the .env file
 echo "Contents of .env file:"
