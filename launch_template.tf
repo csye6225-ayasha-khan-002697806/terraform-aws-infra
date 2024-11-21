@@ -53,7 +53,7 @@ echo "S3_BUCKET_NAME=${aws_s3_bucket.s3_bucket.id}" >> /opt/csye6225/.env
 echo "AWS_REGION=${var.region}" >> /opt/csye6225/.env  
 # Add SNS Topic ARN to the .env file
 echo "SNS_TOPIC_ARN=${aws_sns_topic.user_signup_notification.arn}" >> /opt/csye6225/.env
-echo "JWT_SECRET==${var.jwt_secret}" >> /opt/csye6225/.env
+echo "JWT_SECRET=${var.jwt_secret}" >> /opt/csye6225/.env
 
 # Example of passing values to the application
 export DB_NAME=${var.db_name}
