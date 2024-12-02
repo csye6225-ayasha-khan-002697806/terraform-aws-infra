@@ -1,7 +1,8 @@
 # KMS Key for EC2 (EBS Volumes) with detailed policy and alias
 resource "aws_kms_key" "ec2_kms_key" {
-  description              = "KMS Key for encrypting EC2 EBS volumes"
-  deletion_window_in_days  = 10
+  description             = "KMS Key for encrypting EC2 EBS volumes"
+  deletion_window_in_days = 10
+  #   rotation_period_in_days  = 90
   enable_key_rotation      = true
   customer_master_key_spec = "SYMMETRIC_DEFAULT"
 
@@ -95,8 +96,9 @@ resource "aws_kms_alias" "alias_key_ec2" {
 
 # KMS Key for RDS (Database Encryption) with detailed policy and alias
 resource "aws_kms_key" "rds_kms_key" {
-  description              = "KMS Key for encrypting RDS databases"
-  deletion_window_in_days  = 10
+  description             = "KMS Key for encrypting RDS databases"
+  deletion_window_in_days = 10
+  #   rotation_period_in_days  = 90
   enable_key_rotation      = true
   customer_master_key_spec = "SYMMETRIC_DEFAULT"
 
@@ -205,8 +207,9 @@ resource "aws_kms_alias" "alias_key_rds" {
 
 # KMS Key for S3 (Bucket Encryption) with detailed policy and alias
 resource "aws_kms_key" "s3_kms_key" {
-  description              = "KMS Key for encrypting S3 buckets"
-  deletion_window_in_days  = 10
+  description             = "KMS Key for encrypting S3 buckets"
+  deletion_window_in_days = 10
+  #   rotation_period_in_days  = 90
   enable_key_rotation      = true
   customer_master_key_spec = "SYMMETRIC_DEFAULT"
 
@@ -307,8 +310,9 @@ resource "aws_kms_alias" "alias_key_s3" {
 
 
 resource "aws_kms_key" "secrets_kms_key" {
-  description              = "KMS Key for encrypting Secrets Manager secrets"
-  deletion_window_in_days  = 10
+  description             = "KMS Key for encrypting Secrets Manager secrets"
+  deletion_window_in_days = 10
+  #   rotation_period_in_days  = 90
   enable_key_rotation      = true
   customer_master_key_spec = "SYMMETRIC_DEFAULT"
 
@@ -384,3 +388,5 @@ resource "aws_kms_key" "secrets_kms_key" {
 }
 EOF
 }
+
+

@@ -55,10 +55,7 @@ sudo apt-get install -y awscli jq
 echo "Fetching database credentials from AWS Secrets Manager..."
 
 # Fetch the secret from AWS Secrets Manager
-SECRET=$(aws secretsmanager get-secret-value --region ${var.region} --secret-id ${aws_secretsmanager_secret.db_secret.id} --query SecretString --output text)
-
-# Extract values from the JSON secret
-DB_PASSWORD=$(echo $SECRET | jq -r '.password')
+DB_PASSWORD=$(aws secretsmanager get-secret-value --region ${var.region} --secret-id ${aws_secretsmanager_secret.db_secret.id} --query SecretString --output text | jq -r '.password')
 
 # Write environment variables to the .env file
 # echo "DATABASE=$DB_NAME" >> /opt/csye6225/.env

@@ -147,3 +147,29 @@ resource "aws_iam_role_policy" "secrets_manager_access" {
     ]
   })
 }
+
+
+resource "aws_iam_role_policy" "lambda_secrets_manager_access" {
+  name = "lambda-secrets-manager-access"
+  role = aws_iam_role.lambda_execution_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "secretsmanager:GetSecretValue"
+        ]
+        Resource = aws_secretsmanager_secret.email_service_credentials.arn # Only the SendGrid API Key
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "kms:Decrypt"
+        ]
+        Resource = aws_kms_key.secrets_kms_key.arn
+      }
+    ]
+  })
+}
