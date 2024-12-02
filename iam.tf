@@ -122,14 +122,27 @@ resource "aws_iam_instance_profile" "ec2_profile" {
 
 resource "aws_iam_role_policy" "secrets_manager_access" {
   name = "SecretsManagerAccessPolicy"
-  role = aws_iam_instance_profile.ec2_profile.name
+  role = aws_iam_role.ec2_role.name
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       {
-        Effect   = "Allow"
-        Action   = "secretsmanager:GetSecretValue"
-        Resource = "*"
+        Effect = "Allow"
+        Action = "secretsmanager:GetSecretValue"
+        # Resource = "*"
+        Resource = [
+          aws_secretsmanager_secret.db_secret.arn, # Database Password
+          # aws_secretsmanager_secret.email_service_credentials.arn  # SendGrid API Key
+        ]
+      },
+      {
+        Effect : "Allow",
+        Action : [
+          "kms:Decrypt"
+        ],
+        Resource : [
+          "arn:aws:kms:${var.region}:${var.user_account_id}:key/${aws_kms_key.secrets_kms_key.id}"
+        ]
       }
     ]
   })

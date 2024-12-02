@@ -55,27 +55,23 @@ sudo apt-get install -y awscli jq
 echo "Fetching database credentials from AWS Secrets Manager..."
 
 # Fetch the secret from AWS Secrets Manager
-SECRET=$(aws secretsmanager get-secret-value --region ${var.region} --secret-id database-password --query SecretString --output text)
+SECRET=$(aws secretsmanager get-secret-value --region ${var.region} --secret-id ${aws_secretsmanager_secret.db_secret.id} --query SecretString --output text)
 
 # Extract values from the JSON secret
 DB_PASSWORD=$(echo $SECRET | jq -r '.password')
-DB_USERNAME=$(echo $SECRET | jq -r '.username')
-DB_HOST=$(echo $SECRET | jq -r '.host')
-DB_PORT=$(echo $SECRET | jq -r '.port')
-DB_NAME=$(echo $SECRET | jq -r '.dbname')
 
 # Write environment variables to the .env file
-echo "DATABASE=$DB_NAME" >> /opt/csye6225/.env
-echo "DB_USERNAME=$DB_USERNAME" >> /opt/csye6225/.env
+# echo "DATABASE=$DB_NAME" >> /opt/csye6225/.env
+# echo "DB_USERNAME=$DB_USERNAME" >> /opt/csye6225/.env
 echo "DB_PASSWORD=$DB_PASSWORD" >> /opt/csye6225/.env
-echo "DB_HOST=$DB_HOST" >> /opt/csye6225/.env
-echo "DB_PORT=$DB_PORT" >> /opt/csye6225/.env
-# echo "DATABASE=${var.db_name}" >> /opt/csye6225/.env
-# echo "DB_USERNAME=${var.db_username}" >> /opt/csye6225/.env
+# echo "DB_HOST=$DB_HOST" >> /opt/csye6225/.env
+# echo "DB_PORT=$DB_PORT" >> /opt/csye6225/.env
+echo "DATABASE=${var.db_name}" >> /opt/csye6225/.env
+echo "DB_USERNAME=${var.db_username}" >> /opt/csye6225/.env
 # # echo "DB_PASSWORD=${var.db_password}" >> /opt/csye6225/.env
 # echo "DB_PASSWORD=${random_password.db_password.result}" >> /opt/csye6225/.env
-# echo "DB_HOST=${aws_db_instance.csye6225_postgres_instance.address}" >> /opt/csye6225/.env
-# echo "DB_PORT=${var.db_port}" >> /opt/csye6225/.env
+echo "DB_HOST=${aws_db_instance.csye6225_postgres_instance.address}" >> /opt/csye6225/.env
+echo "DB_PORT=${var.db_port}" >> /opt/csye6225/.env
 echo "S3_BUCKET_NAME=${aws_s3_bucket.s3_bucket.id}" >> /opt/csye6225/.env
 echo "AWS_REGION=${var.region}" >> /opt/csye6225/.env  
 # Add SNS Topic ARN to the .env file
@@ -83,17 +79,17 @@ echo "SNS_TOPIC_ARN=${aws_sns_topic.user_signup_notification.arn}" >> /opt/csye6
 echo "JWT_SECRET=${var.jwt_secret}" >> /opt/csye6225/.env
 
 # Example of passing values to the application
-# export DB_NAME=${var.db_name}
-# export DB_USERNAME=${var.db_username}
+export DB_NAME=${var.db_name}
+export DB_USERNAME=${var.db_username}
 # export DB_PASSWORD=${var.db_password}
 # export DB_PASSWORD=${random_password.db_password.result}
-# export DB_HOSTNAME=${aws_db_instance.csye6225_postgres_instance.address}
-# export DB_PORT=${var.db_port}
-export DATABASE=$DB_NAME
-export DB_USERNAME=$DB_USERNAME
+export DB_HOSTNAME=${aws_db_instance.csye6225_postgres_instance.address}
+export DB_PORT=${var.db_port}
+# export DATABASE=$DB_NAME
+# export DB_USERNAME=$DB_USERNAME
 export DB_PASSWORD=$DB_PASSWORD
-export DB_HOSTNAME=$DB_HOST
-export DB_PORT=$DB_PORT
+# export DB_HOSTNAME=$DB_HOST
+# export DB_PORT=$DB_PORT
 export S3_BUCKET_NAME=${aws_s3_bucket.s3_bucket.id}
 export AWS_REGION=${var.region}
 # Export the ARN as an environment variable for use in the application

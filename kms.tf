@@ -159,6 +159,21 @@ resource "aws_kms_key" "rds_kms_key" {
       "Resource": "*"
     },
     {
+      "Sid": "Allow RDS Use of the Key",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::${var.user_account_id}:role/IAMRoleForEc2"
+      },
+      "Action": [
+        "kms:Encrypt",
+        "kms:Decrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    },
+    {
       "Sid": "Allow Attachment of Persistent Resources",
       "Effect": "Allow",
       "Principal": {
@@ -298,7 +313,7 @@ resource "aws_kms_key" "secrets_kms_key" {
   customer_master_key_spec = "SYMMETRIC_DEFAULT"
 
   tags = {
-    Name = "Secrets Manager KMS Key"
+    Name = "Secrets Manager KMS Key - ${timestamp()}"
   }
 
   policy = <<EOF
@@ -306,6 +321,21 @@ resource "aws_kms_key" "secrets_kms_key" {
   "Version": "2012-10-17",
   "Id": "secrets-kms-policy",
   "Statement": [
+    {
+      "Sid": "AllowSecretsManagerUse",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "secretsmanager.amazonaws.com"
+      },
+      "Action": [
+        "kms:Encrypt",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+      ],
+      "Resource": "*"
+    },
     {
       "Sid": "EnableRootAccess",
       "Effect": "Allow",
@@ -316,17 +346,37 @@ resource "aws_kms_key" "secrets_kms_key" {
       "Resource": "*"
     },
     {
-      "Sid": "AllowSecretsManagerAccess",
+      "Sid": "AllowEC2RoleDecryptAccess",
       "Effect": "Allow",
       "Principal": {
         "AWS": "arn:aws:iam::${var.user_account_id}:role/IAMRoleForEc2"
       },
+      "Action": "kms:Decrypt",
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowKeyAdminAccess",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::${var.user_account_id}:user/awscli-demo"
+      },
       "Action": [
-        "kms:Encrypt",
-        "kms:Decrypt",
-        "kms:ReEncrypt*",
-        "kms:GenerateDataKey*",
-        "kms:DescribeKey"
+        "kms:Create*",
+        "kms:Describe*",
+        "kms:Enable*",
+        "kms:List*",
+        "kms:Put*",
+        "kms:Update*",
+        "kms:Revoke*",
+        "kms:Disable*",
+        "kms:Get*",
+        "kms:Delete*",
+        "kms:TagResource",
+        "kms:UntagResource",
+        "kms:ScheduleKeyDeletion",
+        "kms:CancelKeyDeletion",
+        "kms:RotateKeyOnDemand",
+        "secretsmanager:GetSecretValue"
       ],
       "Resource": "*"
     }

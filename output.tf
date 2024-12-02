@@ -45,7 +45,7 @@ output "aws_route53_zone" {
 }
 
 # Output the generated password
-# output "db_password" {
-#   value     = random_password.db_password.result
-#   sensitive = true # Hides the password from regular Terraform output
-# }
+output "db_password" {
+  value     = random_password.db_password.result
+  sensitive = true # Hides the password from regular Terraform output
+}
