@@ -116,11 +116,20 @@ resource "aws_security_group" "csye6225_rds_security_group" {
 }
 
 
+data "aws_acm_certificate" "issued" {
+  domain   = var.subdomain_name
+  statuses = ["ISSUED"]
+}
+
 # Listener for Load Balancer on Port 80
 resource "aws_lb_listener" "csye6225_app_listener" {
   load_balancer_arn = aws_lb.csye6225_alb.arn
-  port              = 80
-  protocol          = var.tg_protocol
+  # port              = 80
+  # protocol          = var.tg_protocol
+  port            = "443"
+  protocol        = "HTTPS"
+  ssl_policy      = "ELBSecurityPolicy-2016-08"
+  certificate_arn = data.aws_acm_certificate.issued.arn
 
   default_action {
     type             = "forward"

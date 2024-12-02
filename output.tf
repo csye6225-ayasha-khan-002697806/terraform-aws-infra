@@ -43,3 +43,9 @@ output "asg_id" {
 output "aws_route53_zone" {
   value = data.aws_route53_zone.selected_zone.name
 }
+
+# Output the generated password
+output "db_password" {
+  value     = random_password.db_password.result
+  sensitive = true # Hides the password from regular Terraform output
+}
