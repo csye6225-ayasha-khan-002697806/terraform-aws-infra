@@ -178,3 +178,16 @@ variable "jwt_secret" {
   description = "JWT token secret key"
   type        = string
 }
+
+variable "user_account_id" {
+  description = "Demo / Dev account id"
+  type        = string
+  default     = "xxxx"
+}
+
+# variable "assignment" {
+#   type        = string
+#   description = "this is the prefix of the tag value which we provide to resources"
+#   default     = "Assignment"
+
+# }

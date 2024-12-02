@@ -1,5 +1,12 @@
 # rds.tf
 
+# Generate a random password with custom special characters
+resource "random_password" "db_password" {
+  length           = 16
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
+}
+
 # Create a PostgreSQL RDS Parameter Group
 resource "aws_db_parameter_group" "csye6225_postgres_parameter_group" {
   name        = "csye6225-postgres-parameter-group"
@@ -16,17 +23,18 @@ resource "aws_db_parameter_group" "csye6225_postgres_parameter_group" {
 
 # Create a PostgreSQL RDS instance
 resource "aws_db_instance" "csye6225_postgres_instance" {
-  allocated_storage       = 20
-  storage_type            = "gp2"
-  engine                  = "postgres"
-  engine_version          = "16.3"            # Match this with your PostgreSQL version
-  instance_class          = "db.t4g.micro"    # Cheapest instance class
-  identifier              = var.db_identifier # DB instance identifier
-  username                = var.db_username   # Master username
-  password                = var.db_password   # Master password
-  db_name                 = var.db_name       # Database name
-  port                    = var.db_port       # PostgreSQL port
-  publicly_accessible     = false             # Make this false for private access
+  allocated_storage = 20
+  storage_type      = "gp2"
+  engine            = "postgres"
+  engine_version    = "16.3"            # Match this with your PostgreSQL version
+  instance_class    = "db.t4g.micro"    # Cheapest instance class
+  identifier        = var.db_identifier # DB instance identifier
+  username          = var.db_username   # Master username
+  # password          = var.db_password   # Master password
+  password                = random_password.db_password.result
+  db_name                 = var.db_name # Database name
+  port                    = var.db_port # PostgreSQL port
+  publicly_accessible     = false       # Make this false for private access
   skip_final_snapshot     = true
   backup_retention_period = 7
   multi_az                = false
@@ -36,7 +44,8 @@ resource "aws_db_instance" "csye6225_postgres_instance" {
   db_subnet_group_name   = aws_db_subnet_group.csye6225_rds_subnet_group.name  # Use private subnet group for the RDS
 
   # Associate the parameter group with the RDS instance
-
+  storage_encrypted = true
+  kms_key_id        = aws_kms_key.rds_kms_key.arn
 
   # Apply tags to the RDS instance
   tags = {
